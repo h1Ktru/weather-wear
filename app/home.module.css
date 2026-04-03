@@ -39,7 +39,7 @@
   font-size: 16px;
   outline: none;
   transition: border-color 0.3s;
-  color: #333333; /* 入力する文字の色を濃いグレーに固定 */
+  color: #0f0c0c; /* 入力する文字の色を濃いグレーに固定 */
   background-color: #ffffff; /* 背景色を白に固定 */
 }
 
