@@ -5,7 +5,7 @@
   align-items: center;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .searchBox {
@@ -39,6 +39,12 @@
   font-size: 16px;
   outline: none;
   transition: border-color 0.3s;
+  color: #333333; /* 入力する文字の色を濃いグレーに固定 */
+  background-color: #ffffff; /* 背景色を白に固定 */
+}
+
+.inputField::placeholder {
+  color: #a0aabf; /* 少し青みがかった薄いグレーでおしゃれに */
 }
 
 .inputField:focus {
@@ -54,7 +60,9 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s, transform 0.1s;
+  transition:
+    background 0.3s,
+    transform 0.1s;
 }
 
 .searchButton:hover:not(:disabled) {
@@ -89,7 +97,7 @@
   font-size: 56px;
   font-weight: bold;
   margin: 10px 0;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .adviceText {
