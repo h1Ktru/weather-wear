@@ -1,0 +1,111 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.searchBox {
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #333;
+  font-size: 24px;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.inputField {
+  flex: 1;
+  padding: 14px 16px;
+  border: 2px solid #e1e5ee;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.inputField:focus {
+  border-color: #4facfe;
+}
+
+.searchButton {
+  padding: 0 24px;
+  background: #4facfe;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.searchButton:hover:not(:disabled) {
+  background: #00f2fe;
+}
+
+.searchButton:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.searchButton:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.card {
+  margin-top: 24px;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  color: white;
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cityText {
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+.tempText {
+  font-size: 56px;
+  font-weight: bold;
+  margin: 10px 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.adviceText {
+  font-size: 16px;
+  margin-top: 16px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.errorText {
+  color: #ff4d4f;
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}

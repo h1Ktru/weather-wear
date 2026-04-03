@@ -1,65 +1,110 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
+import styles from "./home.module.css";
+export default function Inputfield() {
+  const [name, setName] = useState("");
+  const [results, setResults] = useState<{
+    city: string;
+    temp: number;
+    icon: string;
+  } | null>(null);
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-export default function Home() {
+  async function fetchWeather() {
+    if (!name.trim()) return;
+    
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}&units=metric`;
+    
+    setIsLoading(true);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("City not found");
+      }
+            const data = await response.json();
+            //console.log(data);
+            setResults({
+              city: data.name,
+              temp: Math.round(data.main.temp),
+              icon: data.weather[0].icon,
+            });
+            //setName("");
+            setError("");
+    } catch {
+            setError("No city found. Please check the spelling.");
+            setResults(null);
+            setName("");
+    } finally {
+          setIsLoading(false); //ここにローディング
+    }
+  }
+
+  function getClothingAdvice(temp: number) {
+    let code = "";
+    if (temp < 15) {
+      code = "You need something warm outer like acoat ";
+    } else if (15 <= temp && temp < 25) {
+      code = "We recommend long-sleeve shirts or light outerwear.";
+    } else {
+      code = "Short sleeves are fine! Watch out for heatstroke! ";
+    }
+    return code;
+  }
+function getBgColor(temp: number) {
+  if (temp < 15) {
+    return "#2196f3"; // 少しリッチな青
+  } else if (15 <= temp && temp < 25) {
+    return "#4caf50"; // 少しリッチな緑
+  } else {
+    return "#ff9800"; // 少しリッチなオレンジ
+  }
+}
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className={styles.container}>
+      <div className={styles.searchBox}>
+        <h1 className={styles.title}>Weather & Outfit</h1>
+
+        <div className={styles.inputGroup}>
+          <input
+            type="text"
+            className={styles.inputField}
+            placeholder="Enter city name..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && fetchWeather()} // エンターキー処理
+          />
+          <button
+            className={styles.searchButton}
+            onClick={fetchWeather}
+            disabled={isLoading}
           >
+            {isLoading ? "..." : "Search"}
+          </button>
+        </div>
+
+        {results !== null && (
+          <div
+            className={styles.card}
+            style={{ backgroundColor: getBgColor(results.temp) }}
+          >
+            <h2 className={styles.cityText}>{results.city}</h2>
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src={`https://openweathermap.org/img/wn/${results.icon}@2x.png`}
+              alt="天気アイコン"
+              width={100}
+              height={100}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            <p className={styles.tempText}>{results.temp}℃</p>
+            <p className={styles.adviceText}>
+              {getClothingAdvice(results.temp)}
+            </p>
+          </div>
+        )}
+
+        {error && <div className={styles.errorText}>{error}</div>}
+      </div>
     </div>
   );
 }
